@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Sharing</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYUeFSbQs15I241W-m3VW9oGj1Wh7BhVM"></script>
+</head>
+<body>
+
+<h3>Enter Mobile Number:</h3>
+<input type="text" id="mobileNumber" placeholder="Mobile Number">
+<button onclick="shareLocation()">Share Location</button>
+
+<div id="map" style="width: 100%; height: 400px;"></div>
+
+<script>
+    function initMap(lat = 0, lng = 0) {
+        const position = {lat, lng};
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 15,
+            center: position,
+        });
+        new google.maps.Marker({
+            position: position,
+            map: map,
+        });
+    }
+
+    function shareLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                initMap(latitude, longitude);
+            }, (error) => {
+                console.log("Error: ", error);
+                alert("Failed to get location.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    window.onload = () => {
+        initMap();
+    };
+</script>
+
+</body>
+</html>
